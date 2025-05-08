@@ -1,131 +1,115 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { AuthProvider, useAuth } from './src/context/AuthContext';
+import { CartProvider } from './src/context/CartContext';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// Import tất cả các màn hình
+import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import ProductDetailScreen from './src/screens/ProductDetailScreen';
+import CartScreen from './src/screens/CartScreen';
+import ShippingAddressScreen from './src/screens/ShippingAddressScreen';
+import PaymentMethodScreen from './src/screens/PaymentMethodScreen';
+import OrderSummaryScreen from './src/screens/OrderSummaryScreen';
+import PromotionsScreen from './src/screens/PromotionsScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
+import OrderDetailScreen from './src/screens/OrderDetailScreen';
+import ChangePasswordScreen from './src/screens/ChangePasswordScreen'; // <-- Import ChangePasswordScreen
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+// --- Định nghĩa kiểu cho các Stack ---
+export type AuthStackParamList = {
+  Login: undefined;
+  Register: undefined;
+  ForgotPassword: undefined;
+};
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+export interface ShippingInfo { fullName: string; phoneNumber: string; address: string; city: string; district: string; ward?: string; notes?: string; }
+export interface CartItemForPayment { id: string; name: string; price: number; quantity: number; imageUrl: string; warrantyPeriod?: string; }
+export interface OrderDetailsForSummary { shippingInfo: ShippingInfo; paymentMethod: string; items: CartItemForPayment[]; totalAmount: number; depositRequired?: number; paymentStatus?: string; }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+export type MainStackParamList = {
+  Home: undefined;
+  ProductDetail: { productId: string };
+  Cart: undefined;
+  ShippingAddress: undefined;
+  PaymentMethod: { shippingDetails: ShippingInfo; selectedCartItems: CartItemForPayment[] };
+  OrderSummary: { orderDetails: OrderDetailsForSummary };
+  Promotions: undefined;
+  Profile: undefined;
+  OrderHistory: undefined;
+  OrderDetail: { orderId: string };
+  ChangePassword: undefined; // <-- Khai báo ChangePasswordScreen
+};
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
+const MainStack = createNativeStackNavigator<MainStackParamList>();
 
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
+// --- Component Điều hướng Chính ---
+const RootNavigator = () => {
+  const { user, initializing } = useAuth();
+  if (initializing) {
+    return ( <View style={styles.loadingContainer}><ActivityIndicator size="large" color="#e83e8c" /></View> );
+  }
 
   return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+    <NavigationContainer>
+      {user ? (
+        <CartProvider>
+          <MainStack.Navigator>
+            <MainStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+            <MainStack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ title: 'Chi tiết sản phẩm', headerShown: true, headerTintColor: '#e83e8c' }} />
+            <MainStack.Screen name="Cart" component={CartScreen} options={{ title: 'Giỏ hàng', headerShown: true, headerTintColor: '#e83e8c' }} />
+            <MainStack.Screen name="ShippingAddress" component={ShippingAddressScreen} options={{ title: 'Thông tin giao hàng', headerShown: true, headerTintColor: '#e83e8c' }}/>
+            <MainStack.Screen name="PaymentMethod" component={PaymentMethodScreen} options={{ title: 'Chọn thanh toán', headerShown: true, headerTintColor: '#e83e8c' }} />
+            <MainStack.Screen name="OrderSummary" component={OrderSummaryScreen} options={{ title: 'Xác nhận đơn hàng', headerShown: true, headerTintColor: '#e83e8c' }} />
+            <MainStack.Screen name="Promotions" component={PromotionsScreen} options={{ title: 'Ưu Đãi & Khuyến Mãi', headerShown: true, headerTintColor: '#e83e8c' }} />
+            <MainStack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Tài khoản của tôi', headerShown: true, headerTintColor: '#e83e8c' }} />
+            <MainStack.Screen name="OrderHistory" component={OrderHistoryScreen} options={{ title: 'Lịch sử đơn hàng', headerShown: true, headerTintColor: '#e83e8c' }} />
+            <MainStack.Screen name="OrderDetail" component={OrderDetailScreen} options={{ title: 'Chi tiết đơn hàng', headerShown: true, headerTintColor: '#e83e8c' }} />
+            {/* --- Khai báo ChangePasswordScreen trong Navigator --- */}
+            <MainStack.Screen
+                name="ChangePassword"
+                component={ChangePasswordScreen}
+                options={{
+                    title: 'Đổi mật khẩu',
+                    headerShown: true,
+                    headerTintColor: '#e83e8c',
+                }}
+            />
+          </MainStack.Navigator>
+        </CartProvider>
+      ) : (
+        <AuthStack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+          <AuthStack.Screen name="Login" component={LoginScreen} />
+          <AuthStack.Screen name="Register" component={RegisterScreen} />
+          <AuthStack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        </AuthStack.Navigator>
+      )}
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
+function App(): React.JSX.Element { return ( <AuthProvider><RootNavigator /></AuthProvider> ); }
+const styles = StyleSheet.create({ loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f8f9fa', }, });
 export default App;
+
+// --- Định nghĩa và Export kiểu Props ---
+export type LoginScreenNavProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
+export type RegisterScreenNavProps = NativeStackScreenProps<AuthStackParamList, 'Register'>;
+export type ForgotPasswordScreenNavProps = NativeStackScreenProps<AuthStackParamList, 'ForgotPassword'>;
+export type HomeScreenNavProps = NativeStackScreenProps<MainStackParamList, 'Home'>;
+export type ProductDetailScreenNavProps = NativeStackScreenProps<MainStackParamList, 'ProductDetail'>;
+export type CartScreenNavProps = NativeStackScreenProps<MainStackParamList, 'Cart'>;
+export type ShippingAddressScreenNavProps = NativeStackScreenProps<MainStackParamList, 'ShippingAddress'>;
+export type PaymentMethodScreenNavProps = NativeStackScreenProps<MainStackParamList, 'PaymentMethod'>;
+export type OrderSummaryScreenNavProps = NativeStackScreenProps<MainStackParamList, 'OrderSummary'>;
+export type PromotionsScreenNavProps = NativeStackScreenProps<MainStackParamList, 'Promotions'>;
+export type ProfileScreenNavProps = NativeStackScreenProps<MainStackParamList, 'Profile'>;
+export type OrderHistoryScreenNavProps = NativeStackScreenProps<MainStackParamList, 'OrderHistory'>;
+export type OrderDetailScreenNavProps = NativeStackScreenProps<MainStackParamList, 'OrderDetail'>;
+export type ChangePasswordScreenNavProps = NativeStackScreenProps<MainStackParamList, 'ChangePassword'>; // <-- Export kiểu

@@ -1,0 +1,78 @@
+[
+    {
+      "id": "p1",
+      "name": "iPhone 16 Pro Max 256GB Chính hãng VN/A",
+      "brand": "Apple",
+      "price": 30990000,
+      "oldPrice": 34990000,
+      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max.png",
+      "description": "iPhone 16 Pro Max với chip A18 Bionic mạnh mẽ, màn hình Super Retina XDR sắc nét, hệ thống camera chuyên nghiệp và thời lượng pin ấn tượng. Phiên bản 256GB chính hãng VN/A.",
+      "stock": 50,
+      "discountPercent": 11,
+      "colors": ["Titan tự nhiên", "Titan xanh", "Titan Đen", "Titan Trắng"],
+      "specifications": {
+        "Màn hình": "6.7 inch Super Retina XDR",
+        "Chip": "Apple A18 Bionic",
+        "RAM": "8GB",
+        "Camera sau": "Chính 48MP, Ultra Wide 12MP, Telephoto 12MP",
+        "Camera trước": "12MP TrueDepth"
+      }
+    },
+    {
+      "id": "p2",
+      "name": "Samsung Galaxy S25 Ultra 512GB",
+      "brand": "Samsung",
+      "price": 28490000,
+      "oldPrice": 33990000,
+      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s25-ultra_1__3.png",
+      "description": "Trải nghiệm đỉnh cao với Samsung Galaxy S24 Ultra. Màn hình Dynamic AMOLED 2X siêu mượt, bút S Pen tích hợp, camera zoom quang học vượt trội và hiệu năng mạnh mẽ.",
+      "stock": 30,
+      "discountPercent": 16,
+       "colors": ["Xám Titan", "Tím Titan", "Vàng Titan", "Đen Titan"],
+       "specifications": {
+        "Màn hình": "6.8 inch Dynamic AMOLED 2X",
+        "Chip": "Snapdragon 8 Gen 3 for Galaxy",
+        "RAM": "12GB",
+        "Camera sau": "Chính 200MP, Ultra Wide 12MP, Tele 10MP (3x, 10x)",
+        "Pin": "5000 mAh"
+      }
+    },
+    {
+      "id": "p3",
+      "name": "OPPO Find N3 Flip 12GB 256GB",
+      "brand": "OPPO",
+      "price": 18990000,
+      "oldPrice": 21990000,
+      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-n3-flip_6_.png",
+      "description": "Điện thoại gập thời trang OPPO Find N3 Flip với màn hình phụ lớn, camera Hasselblad chất lượng và thiết kế nhỏ gọn, tinh tế.",
+      "stock": 25,
+      "discountPercent": 14,
+       "colors": ["Đen", "Tím", "Vàng"],
+       "specifications": {
+        "Màn hình chính": "6.8 inch AMOLED",
+        "Màn hình phụ": "3.26 inch AMOLED",
+        "Chip": "MediaTek Dimensity 9200",
+        "RAM": "8GB"
+      }
+    },
+     {
+      "id": "p4",
+      "name": "Xiaomi 14 Ultra 5G (16GB 512GB)",
+      "brand": "Xiaomi",
+      "price": 19990000,
+      "oldPrice": null, 
+      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_1__3_1_1_1.png",
+      "description": "Xiaomi 14 Ultra - Nhỏ gọn mạnh mẽ với ống kính Leica Summilux, chip Snapdragon 8 Gen 3 và màn hình CrystalRes AMOLED sống động.",
+      "stock": 40,
+      "discountPercent": null, 
+       "colors": ["Đen", "Trắng", "Xanh lá"],
+       "specifications": {
+        "Màn hình": "6.36 inch CrystalRes AMOLED",
+        "Chip": "Snapdragon 8 Gen 3",
+        "RAM": "12GB",
+        "Camera": "Leica Summilux 50MP"
+      }
+    }
+    
+  ]
+  
