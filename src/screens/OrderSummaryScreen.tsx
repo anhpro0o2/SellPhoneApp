@@ -10,12 +10,30 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-import type { OrderSummaryScreenNavProps } from '../../App'; // Đảm bảo đường dẫn đúng
-import { useCart } from '../context/CartContext'; // Đảm bảo đường dẫn đúng
+import type { OrderSummaryScreenNavProps } from '../../App';
+import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import firestore from '@react-native-firebase/firestore';
+import productsJsonData from '../data/products.json';
 
-// Kiểu dữ liệu
+// Định nghĩa kiểu cho sản phẩm gốc từ JSON
+interface ProductSourceData {
+  id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  brand?: string;
+  oldPrice?: number | null;
+  description?: string;
+  stock?: number;
+  discountPercent?: number | null;
+  specifications?: { [key: string]: string | undefined };
+  colors?: string[];
+  warrantyPeriodInMonths?: number;
+  defaultWarrantyMonths?: number;
+}
+
+// Kiểu dữ liệu ShippingInfo
 interface ShippingInfo {
   fullName: string;
   phoneNumber: string;
@@ -26,6 +44,7 @@ interface ShippingInfo {
   notes?: string;
 }
 
+// --- QUAN TRỌNG: Đảm bảo interface này có warrantyPeriodInMonths ---
 interface CartItemForSummary {
   id: string;
   name: string;
@@ -33,16 +52,31 @@ interface CartItemForSummary {
   quantity: number;
   imageUrl: string;
   warrantyPeriod?: string;
+  warrantyPeriodInMonths?: number; // SỐ THÁNG BẢO HÀNH
 }
+// ---
 
+// Kiểu OrderDetails mà màn hình này nhận từ route params
 interface OrderDetails {
   shippingInfo: ShippingInfo;
   paymentMethod: string;
   items: CartItemForSummary[];
   totalAmount: number;
   depositRequired?: number;
-  paymentStatus?: string; // Thêm từ App.tsx
+  paymentStatus?: string;
 }
+
+const getProductDetailsFromSource = (productId: string): { warrantyPeriodInMonths?: number } | undefined => {
+    const product = (productsJsonData as ProductSourceData[]).find(p => p.id === productId);
+    if (product) {
+        if (typeof product.warrantyPeriodInMonths === 'number') {
+            return { warrantyPeriodInMonths: product.warrantyPeriodInMonths };
+        } else if (typeof product.defaultWarrantyMonths === 'number') {
+            return { warrantyPeriodInMonths: product.defaultWarrantyMonths };
+        }
+    }
+    return undefined;
+};
 
 const OrderSummaryScreen: React.FC<OrderSummaryScreenNavProps> = ({ route, navigation }) => {
   const { orderDetails } = route.params;
@@ -56,7 +90,7 @@ const OrderSummaryScreen: React.FC<OrderSummaryScreenNavProps> = ({ route, navig
     return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
   };
 
-  const shippingFee = 0; // Giả lập phí vận chuyển
+  const shippingFee = 0;
 
   let paymentMethodLabelText: string;
   let initialPaymentStatus: string;
@@ -77,13 +111,13 @@ const OrderSummaryScreen: React.FC<OrderSummaryScreenNavProps> = ({ route, navig
       break;
     case 'bankTransfer':
       paymentMethodLabelText = 'Chuyển khoản ngân hàng';
-      initialPaymentStatus = orderDetails.paymentStatus || 'Đã thanh toán (Chờ xác nhận)'; // Sử dụng paymentStatus từ orderDetails nếu có
+      initialPaymentStatus = orderDetails.paymentStatus || 'Đã thanh toán (Chờ xác nhận)';
       uiPaymentStatusText = `${initialPaymentStatus}: ${formatPrice(totalAmount + shippingFee)}`;
       finalSummaryLabel = "Tổng tiền (Đã thanh toán):";
       break;
     case 'onlineWallet':
       paymentMethodLabelText = 'Ví điện tử';
-      initialPaymentStatus = orderDetails.paymentStatus || 'Đã thanh toán (Chờ xác nhận)'; // Sử dụng paymentStatus từ orderDetails nếu có
+      initialPaymentStatus = orderDetails.paymentStatus || 'Đã thanh toán (Chờ xác nhận)';
       uiPaymentStatusText = `${initialPaymentStatus}: ${formatPrice(totalAmount + shippingFee)}`;
       finalSummaryLabel = "Tổng tiền (Đã thanh toán):";
       break;
@@ -102,44 +136,70 @@ const OrderSummaryScreen: React.FC<OrderSummaryScreenNavProps> = ({ route, navig
     }
     setIsPlacingOrder(true);
 
+    // --- THÊM CONSOLE.LOG ĐỂ KIỂM TRA items ---
+    console.log('Dữ liệu items trong OrderSummaryScreen trước khi map:', JSON.stringify(items, null, 2));
+    // ---
+
     try {
       const orderId = firestore().collection('orders').doc().id;
-      const createdAt = firestore.FieldValue.serverTimestamp();
+      const purchaseDate = firestore.FieldValue.serverTimestamp();
 
-      const itemsWithWarranty = items.map(item => ({
-        ...item,
-        warrantyPeriod: item.warrantyPeriod || "12 tháng",
+      const itemsForOrder = items.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        imageUrl: item.imageUrl,
       }));
 
-      // --- SỬA LỖI Ở ĐÂY: Xử lý các trường optional trong shippingInfo ---
       const sanitizedShippingInfo = {
         fullName: shippingInfo.fullName,
         phoneNumber: shippingInfo.phoneNumber,
         address: shippingInfo.address,
         city: shippingInfo.city,
         district: shippingInfo.district,
-        ward: shippingInfo.ward || null, // Chuyển undefined thành null
-        notes: shippingInfo.notes || null, // Chuyển undefined thành null
+        ward: shippingInfo.ward || null,
+        notes: shippingInfo.notes || null,
       };
-      // --- KẾT THÚC SỬA LỖI ---
 
       const orderData = {
         orderId,
         userId: user.uid,
-        createdAt,
-        items: itemsWithWarranty,
-        shippingInfo: sanitizedShippingInfo, // Sử dụng shippingInfo đã được làm sạch
+        createdAt: purchaseDate,
+        items: itemsForOrder,
+        shippingInfo: sanitizedShippingInfo,
         paymentMethod: paymentMethodLabelText,
         totalAmount: totalAmount + shippingFee,
         depositRequired: depositRequired && depositRequired > 0 ? depositRequired : null,
         amountDue: finalSummaryAmount,
         orderStatus: initialOrderStatus,
         paymentStatus: initialPaymentStatus,
-        // shippingFee: shippingFee, // Cân nhắc lưu phí ship riêng nếu cần hiển thị tách bạch
       };
 
       await firestore().collection('orders').doc(orderId).set(orderData);
       console.log('Đơn hàng đã được lưu vào Firestore với ID:', orderId);
+
+      const warrantyPromises = items.map(async (item: CartItemForSummary) => { // Thêm kiểu rõ ràng cho item
+        const productSourceDetails = getProductDetailsFromSource(item.id);
+        // Dòng này sẽ không báo lỗi nếu CartItemForSummary có warrantyPeriodInMonths
+        // và dữ liệu item thực sự có trường này
+        const warrantyPeriodInMonths = item.warrantyPeriodInMonths || productSourceDetails?.warrantyPeriodInMonths || 12;
+
+        const warrantyData = {
+          warrantyId: firestore().collection('warranties').doc().id,
+          userId: user.uid,
+          orderId: orderId,
+          productId: item.id,
+          productName: item.name,
+          purchaseDate: purchaseDate,
+          warrantyPeriodInMonths: warrantyPeriodInMonths,
+          status: 'Còn hạn',
+        };
+        return firestore().collection('warranties').doc(warrantyData.warrantyId).set(warrantyData);
+      });
+
+      await Promise.all(warrantyPromises);
+      console.log('Tất cả phiếu bảo hành đã được tạo cho đơn hàng:', orderId);
 
       items.forEach(item => {
         removeItemFromCart(item.id);
@@ -147,13 +207,13 @@ const OrderSummaryScreen: React.FC<OrderSummaryScreenNavProps> = ({ route, navig
 
       Alert.alert(
         'Đặt hàng thành công!',
-        `Cảm ơn bạn đã mua hàng. Mã đơn hàng của bạn là: ${orderId}. Chúng tôi sẽ xử lý đơn hàng sớm nhất.`,
+        `Cảm ơn bạn đã mua hàng. Mã đơn hàng của bạn là: ${orderId}. Thông tin bảo hành đã được ghi nhận.`,
         [{ text: 'OK', onPress: () => navigation.popToTop() }]
       );
 
-    } catch (error: any) { // Thêm kiểu any hoặc Error cho error
-      console.error("Lỗi khi đặt hàng và lưu vào Firestore:", error);
-      Alert.alert('Đặt hàng thất bại', `Đã có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại. Chi tiết: ${error.message}`);
+    } catch (error: any) {
+      console.error("Lỗi khi đặt hàng và tạo bảo hành:", error);
+      Alert.alert('Đặt hàng thất bại', `Đã có lỗi xảy ra. Vui lòng thử lại. Chi tiết: ${error.message}`);
     } finally {
       setIsPlacingOrder(false);
     }
@@ -180,7 +240,6 @@ const OrderSummaryScreen: React.FC<OrderSummaryScreenNavProps> = ({ route, navig
             {uiPaymentStatusText && paymentMethod !== 'cod' && (
                  <Text style={styles.infoTextHighlight}>{uiPaymentStatusText}</Text>
             )}
-             {/* Hiển thị thông tin cọc cho COD nếu có */}
             {paymentMethod === 'cod' && depositRequired && depositRequired > 0 && uiPaymentStatusText && (
                 <Text style={styles.infoTextHighlight}>{uiPaymentStatusText}</Text>
             )}

@@ -1,78 +1,337 @@
 [
-    {
-      "id": "p1",
-      "name": "iPhone 16 Pro Max 256GB Chính hãng VN/A",
-      "brand": "Apple",
-      "price": 30990000,
-      "oldPrice": 34990000,
-      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max.png",
-      "description": "iPhone 16 Pro Max với chip A18 Bionic mạnh mẽ, màn hình Super Retina XDR sắc nét, hệ thống camera chuyên nghiệp và thời lượng pin ấn tượng. Phiên bản 256GB chính hãng VN/A.",
-      "stock": 50,
-      "discountPercent": 11,
-      "colors": ["Titan tự nhiên", "Titan xanh", "Titan Đen", "Titan Trắng"],
-      "specifications": {
-        "Màn hình": "6.7 inch Super Retina XDR",
-        "Chip": "Apple A18 Bionic",
-        "RAM": "8GB",
-        "Camera sau": "Chính 48MP, Ultra Wide 12MP, Telephoto 12MP",
-        "Camera trước": "12MP TrueDepth"
-      }
-    },
-    {
-      "id": "p2",
-      "name": "Samsung Galaxy S25 Ultra 512GB",
-      "brand": "Samsung",
-      "price": 28490000,
-      "oldPrice": 33990000,
-      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s25-ultra_1__3.png",
-      "description": "Trải nghiệm đỉnh cao với Samsung Galaxy S24 Ultra. Màn hình Dynamic AMOLED 2X siêu mượt, bút S Pen tích hợp, camera zoom quang học vượt trội và hiệu năng mạnh mẽ.",
-      "stock": 30,
-      "discountPercent": 16,
-       "colors": ["Xám Titan", "Tím Titan", "Vàng Titan", "Đen Titan"],
-       "specifications": {
-        "Màn hình": "6.8 inch Dynamic AMOLED 2X",
-        "Chip": "Snapdragon 8 Gen 3 for Galaxy",
-        "RAM": "12GB",
-        "Camera sau": "Chính 200MP, Ultra Wide 12MP, Tele 10MP (3x, 10x)",
-        "Pin": "5000 mAh"
-      }
-    },
-    {
-      "id": "p3",
-      "name": "OPPO Find N3 Flip 12GB 256GB",
-      "brand": "OPPO",
-      "price": 18990000,
-      "oldPrice": 21990000,
-      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-n3-flip_6_.png",
-      "description": "Điện thoại gập thời trang OPPO Find N3 Flip với màn hình phụ lớn, camera Hasselblad chất lượng và thiết kế nhỏ gọn, tinh tế.",
-      "stock": 25,
-      "discountPercent": 14,
-       "colors": ["Đen", "Tím", "Vàng"],
-       "specifications": {
-        "Màn hình chính": "6.8 inch AMOLED",
-        "Màn hình phụ": "3.26 inch AMOLED",
-        "Chip": "MediaTek Dimensity 9200",
-        "RAM": "8GB"
-      }
-    },
-     {
-      "id": "p4",
-      "name": "Xiaomi 14 Ultra 5G (16GB 512GB)",
-      "brand": "Xiaomi",
-      "price": 19990000,
-      "oldPrice": null, 
-      "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_1__3_1_1_1.png",
-      "description": "Xiaomi 14 Ultra - Nhỏ gọn mạnh mẽ với ống kính Leica Summilux, chip Snapdragon 8 Gen 3 và màn hình CrystalRes AMOLED sống động.",
-      "stock": 40,
-      "discountPercent": null, 
-       "colors": ["Đen", "Trắng", "Xanh lá"],
-       "specifications": {
-        "Màn hình": "6.36 inch CrystalRes AMOLED",
-        "Chip": "Snapdragon 8 Gen 3",
-        "RAM": "12GB",
-        "Camera": "Leica Summilux 50MP"
-      }
+  {
+    "id": "p1",
+    "name": "iPhone 16 Pro Max 256GB Chính hãng VN/A",
+    "brand": "Apple",
+    "price": 30990000,
+    "oldPrice": 34990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max.png",
+    "description": "iPhone 16 Pro Max với chip A18 Bionic siêu mạnh mẽ, màn hình Super Retina XDR 6.7 inch ProMotion 120Hz cho trải nghiệm hình ảnh đỉnh cao. Hệ thống camera chuyên nghiệp với cảm biến lớn hơn, khả năng quay video ProRes và chế độ Cinematic cải tiến. Thời lượng pin ấn tượng cùng thiết kế Titan bền bỉ và sang trọng. Phiên bản 256GB chính hãng VN/A.",
+    "stock": 50,
+    "discountPercent": 11,
+    "colors": ["Titan tự nhiên", "Titan xanh", "Titan Đen", "Titan Trắng"],
+    "specifications": {
+      "Màn hình": "6.7 inch Super Retina XDR, ProMotion 120Hz, Always-On display",
+      "Chip": "Apple A18 Bionic (Tiến trình 3nm)",
+      "RAM": "8GB",
+      "Camera sau": "Chính 48MP (cải tiến), Ultra Wide 12MP, Telephoto 12MP (Zoom quang 5x)",
+      "Camera trước": "12MP TrueDepth với autofocus",
+      "Pin": "Cải thiện đáng kể so với thế hệ trước",
+      "Hệ điều hành": "iOS 18"
     }
-    
-  ]
-  
+  },
+  {
+    "id": "p2",
+    "name": "Samsung Galaxy S25 Ultra 512GB",
+    "brand": "Samsung",
+    "price": 28490000,
+    "oldPrice": 33990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s25-ultra_1__3.png",
+    "description": "Trải nghiệm đỉnh cao công nghệ với Samsung Galaxy S25 Ultra. Màn hình Dynamic AMOLED 2X 6.8 inch siêu mượt 144Hz, độ sáng vượt trội. Bút S Pen tích hợp với nhiều cải tiến về độ trễ và tính năng. Hệ thống camera zoom quang học 200MP đột phá, khả năng chụp đêm và quay video 8K ấn tượng. Hiệu năng mạnh mẽ từ chip Snapdragon 8 Gen 4 for Galaxy.",
+    "stock": 30,
+    "discountPercent": 16,
+    "colors": ["Xám Titan", "Tím Titan", "Vàng Titan", "Đen Titan", "Xanh Titan"],
+    "specifications": {
+      "Màn hình": "6.8 inch Dynamic AMOLED 2X, 144Hz, Gorilla Glass Armor",
+      "Chip": "Snapdragon 8 Gen 4 for Galaxy",
+      "RAM": "12GB/16GB",
+      "Camera sau": "Chính 200MP, Ultra Wide 12MP, Tele 50MP (3x), Tele 50MP (5x), Cảm biến chiều sâu",
+      "Camera trước": "12MP",
+      "Pin": "5000 mAh, Sạc nhanh 65W",
+      "Tính năng đặc biệt": "Bút S Pen tích hợp, Galaxy AI cải tiến"
+    }
+  },
+  {
+    "id": "p3",
+    "name": "OPPO Find N3 Flip 12GB 256GB",
+    "brand": "OPPO",
+    "price": 18990000,
+    "oldPrice": 21990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-n3-flip_6_.png",
+    "description": "Điện thoại gập thời trang OPPO Find N3 Flip khẳng định đẳng cấp với màn hình phụ lớn đa năng, cho phép tương tác nhanh chóng. Camera Hasselblad danh tiếng mang đến chất lượng ảnh chụp vượt trội. Thiết kế gập vỏ sò nhỏ gọn, tinh tế cùng hiệu năng mạnh mẽ từ chip MediaTek Dimensity 9200.",
+    "stock": 25,
+    "discountPercent": 14,
+    "colors": ["Đen", "Tím", "Vàng Kem"],
+    "specifications": {
+      "Màn hình chính": "6.8 inch AMOLED, 120Hz",
+      "Màn hình phụ": "3.26 inch AMOLED",
+      "Chip": "MediaTek Dimensity 9200",
+      "RAM": "12GB",
+      "Bộ nhớ trong": "256GB",
+      "Camera sau": "Chính 50MP, Ultra Wide 48MP, Tele 32MP",
+      "Camera trước": "32MP",
+      "Pin": "4300 mAh, Sạc nhanh SuperVOOC 44W"
+    }
+  },
+  {
+    "id": "p4",
+    "name": "Xiaomi 14 Ultra 5G (16GB 512GB)",
+    "brand": "Xiaomi",
+    "price": 19990000,
+    "oldPrice": null,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_1__3_1_1_1.png",
+    "description": "Xiaomi 14 Ultra - Tuyệt tác nhiếp ảnh di động với hệ thống camera Leica Summilux thế hệ mới, cảm biến 1 inch siêu lớn. Chip Snapdragon 8 Gen 3 mạnh mẽ, màn hình CrystalRes AMOLED C8 2K siêu sống động. Thiết kế sang trọng với khung viền titan và mặt lưng da nano-tech.",
+    "stock": 40,
+    "discountPercent": null,
+    "colors": ["Đen", "Trắng", "Xanh Dương (Titanium Special Edition)"],
+    "specifications": {
+      "Màn hình": "6.73 inch CrystalRes AMOLED C8, 120Hz, LTPO",
+      "Chip": "Snapdragon 8 Gen 3",
+      "RAM": "16GB LPDDR5X",
+      "Bộ nhớ trong": "512GB UFS 4.0",
+      "Camera sau": "Leica 50MP (cảm biến 1-inch LYT-900), Leica Tele 50MP (3.2x), Leica Periscope 50MP (5x), Leica Ultra-Wide 50MP",
+      "Camera trước": "32MP",
+      "Pin": "5300 mAh, Sạc nhanh 90W có dây, 80W không dây"
+    }
+  },
+  {
+    "id": "p5",
+    "name": "iPhone 16 128GB Chính hãng VN/A",
+    "brand": "Apple",
+    "price": 21990000,
+    "oldPrice": 23990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-plus-1.png",
+    "description": "iPhone 16 mang đến những cải tiến đáng giá với chip A17 hiệu năng cao, màn hình OLED sáng hơn và hệ thống camera kép được nâng cấp. Thiết kế quen thuộc nhưng tinh tế hơn, cùng thời lượng pin tốt cho cả ngày dài sử dụng. Lựa chọn tuyệt vời cho người dùng yêu thích sự ổn định và hệ sinh thái Apple.",
+    "stock": 60,
+    "discountPercent": 8,
+    "colors": ["Đen", "Trắng", "Xanh Dương", "Hồng", "Vàng"],
+    "specifications": {
+      "Màn hình": "6.1 inch Super Retina XDR OLED",
+      "Chip": "Apple A17 (có thể là A17 Pro bản rút gọn)",
+      "RAM": "6GB",
+      "Camera sau": "Chính 12MP (cải tiến), Ultra Wide 12MP",
+      "Camera trước": "12MP TrueDepth",
+      "Hệ điều hành": "iOS 18"
+    }
+  },
+  {
+    "id": "p6",
+    "name": "iPhone 15 Pro 128GB Chính hãng VN/A",
+    "brand": "Apple",
+    "price": 25490000,
+    "oldPrice": 27990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png",
+    "description": "iPhone 15 Pro với khung viền Titan siêu nhẹ và bền, chip A17 Pro mạnh mẽ nhất từ Apple. Màn hình ProMotion 120Hz, nút Action tùy biến và cổng USB-C tiện lợi. Hệ thống camera Pro được nâng cấp đáng kể, đặc biệt là khả năng zoom và chụp ảnh thiếu sáng.",
+    "stock": 45,
+    "discountPercent": 9,
+    "colors": ["Titan tự nhiên", "Titan xanh", "Titan Đen", "Titan Trắng"],
+    "specifications": {
+      "Màn hình": "6.1 inch Super Retina XDR, ProMotion 120Hz",
+      "Chip": "Apple A17 Pro",
+      "RAM": "8GB",
+      "Camera sau": "Chính 48MP, Ultra Wide 12MP, Telephoto 12MP (Zoom quang 3x)",
+      "Camera trước": "12MP TrueDepth",
+      "Cổng kết nối": "USB-C (USB 3 tốc độ cao)"
+    }
+  },
+  {
+    "id": "p7",
+    "name": "iPhone 15 Plus 256GB Chính hãng VN/A",
+    "brand": "Apple",
+    "price": 24990000,
+    "oldPrice": 27490000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1_.png",
+    "description": "iPhone 15 Plus nổi bật với màn hình lớn 6.7 inch và thời lượng pin vượt trội. Chip A16 Bionic mạnh mẽ, camera chính 48MP và thiết kế Dynamic Island độc đáo. Một lựa chọn tuyệt vời cho những ai yêu thích màn hình lớn và pin trâu.",
+    "stock": 55,
+    "discountPercent": 9,
+    "colors": ["Đen", "Xanh Dương", "Xanh Lá", "Vàng", "Hồng"],
+    "specifications": {
+      "Màn hình": "6.7 inch Super Retina XDR OLED",
+      "Chip": "Apple A16 Bionic",
+      "RAM": "6GB",
+      "Camera sau": "Chính 48MP, Ultra Wide 12MP",
+      "Camera trước": "12MP TrueDepth",
+      "Tính năng": "Dynamic Island"
+    }
+  },
+  {
+    "id": "p8",
+    "name": "iPhone 16e 128GB",
+    "brand": "Apple",
+    "price": 13990000,
+    "oldPrice": null,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16e-128gb.png",
+    "description": "iPhone SE thế hệ mới (dự kiến 2025) hứa hẹn mang đến hiệu năng mạnh mẽ của chip Apple mới nhất trong một thiết kế nhỏ gọn và giá cả phải chăng. Màn hình OLED, camera cải tiến và hỗ trợ 5G, là lựa chọn hoàn hảo cho người dùng yêu thích sự nhỏ gọn và hiệu năng.",
+    "stock": 70,
+    "discountPercent": null,
+    "colors": ["Đen", "Trắng", "(PRODUCT)RED"],
+    "specifications": {
+      "Màn hình": "Dự kiến 6.1 inch OLED (thay thế thiết kế cũ)",
+      "Chip": "Apple A17 hoặc A18 (dự kiến)",
+      "Camera": "Camera đơn 12MP cải tiến",
+      "Kết nối": "5G"
+    }
+  },
+  {
+    "id": "p9",
+    "name": "Samsung Galaxy Z Fold 6 512GB",
+    "brand": "Samsung",
+    "price": 42990000,
+    "oldPrice": 45990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-z-fold-6-xanh_5_.png",
+    "description": "Samsung Galaxy Z Fold 6 tiếp tục định nghĩa lại trải nghiệm di động với màn hình gập lớn hơn, mỏng nhẹ hơn và bền bỉ hơn. Hiệu năng đỉnh cao từ chip Snapdragon mới nhất, camera cải tiến và nhiều tính năng đa nhiệm thông minh được tối ưu cho màn hình gập.",
+    "stock": 20,
+    "discountPercent": 7,
+    "colors": ["Đen Phantom", "Xanh Icy", "Kem"],
+    "specifications": {
+      "Màn hình chính": "7.6 inch Dynamic AMOLED 2X, 120Hz",
+      "Màn hình phụ": "6.2 inch Dynamic AMOLED 2X, 120Hz",
+      "Chip": "Snapdragon 8 Gen 4 for Galaxy (dự kiến)",
+      "RAM": "12GB",
+      "Camera": "Hệ thống camera cao cấp, cải thiện khả năng chụp thiếu sáng"
+    }
+  },
+  {
+    "id": "p10",
+    "name": "Samsung Galaxy Z Flip 6 256GB",
+    "brand": "Samsung",
+    "price": 23990000,
+    "oldPrice": 25990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/f/r/frame_166_3.png",
+    "description": "Samsung Galaxy Z Flip 6 là sự kết hợp hoàn hảo giữa thời trang và công nghệ. Thiết kế gập vỏ sò nhỏ gọn, màn hình phụ lớn hơn và tiện dụng hơn. Camera chất lượng cao, hiệu năng mạnh mẽ và nhiều tùy chọn màu sắc cá tính.",
+    "stock": 35,
+    "discountPercent": 8,
+    "colors": ["Tím Fancy", "Xanh Mint", "Xám Graphite", "Vàng Cream"],
+    "specifications": {
+      "Màn hình chính": "6.7 inch Dynamic AMOLED 2X, 120Hz",
+      "Màn hình phụ": "3.4 inch Super AMOLED (dự kiến lớn hơn)",
+      "Chip": "Snapdragon 8 Gen 3 for Galaxy (dự kiến)",
+      "RAM": "8GB",
+      "Camera": "Camera kép cải tiến, FlexCam linh hoạt"
+    }
+  },
+  {
+    "id": "p11",
+    "name": "Samsung Galaxy A56 5G 128GB",
+    "brand": "Samsung",
+    "price": 9490000,
+    "oldPrice": 10490000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-a56.1_1.png",
+    "description": "Samsung Galaxy A56 5G mang đến trải nghiệm tuyệt vời trong phân khúc tầm trung. Màn hình Super AMOLED mượt mà, camera độ phân giải cao, hiệu năng ổn định cho các tác vụ hàng ngày và kết nối 5G tốc độ cao. Thiết kế trẻ trung, pin lớn.",
+    "stock": 80,
+    "discountPercent": 10,
+    "colors": ["Đen Awesome", "Xanh Awesome", "Trắng Awesome"],
+    "specifications": {
+      "Màn hình": "6.5 inch Super AMOLED, 120Hz",
+      "Chip": "Exynos 1480 (dự kiến)",
+      "RAM": "8GB",
+      "Camera sau": "Chính 50MP OIS, Ultra Wide 12MP, Macro 5MP",
+      "Pin": "5000 mAh, Sạc nhanh 25W"
+    }
+  },
+  {
+    "id": "p12",
+    "name": "OPPO Reno12 Pro 5G",
+    "brand": "OPPO",
+    "price": 13990000,
+    "oldPrice": null,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno-12pro-2.png",
+    "description": "OPPO Reno12 Pro tiếp tục là chuyên gia chân dung với hệ thống camera được nâng cấp mạnh mẽ, tích hợp AI thông minh. Thiết kế thời thượng, màn hình AMOLED cong tràn viền sắc nét và hiệu năng mượt mà cho mọi trải nghiệm.",
+    "stock": 40,
+    "discountPercent": null,
+    "colors": ["Bạc Ánh Trăng", "Đen Sao Đêm", "Xanh Ngọc Bích"],
+    "specifications": {
+      "Màn hình": "6.7 inch AMOLED, 120Hz",
+      "Chip": "MediaTek Dimensity 9300+ (dự kiến)",
+      "RAM": "12GB",
+      "Camera sau": "Chính 50MP Sony IMX890, Tele Chân dung 32MP, Ultra Wide 8MP",
+      "Camera trước": "32MP",
+      "Pin": "4800 mAh, Sạc nhanh SuperVOOC 80W"
+    }
+  },
+  {
+    "id": "p13",
+    "name": "OPPO A79 5G",
+    "brand": "OPPO",
+    "price": 6990000,
+    "oldPrice": 7490000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-a79-tim.png",
+    "description": "OPPO A99 5G là lựa chọn hấp dẫn trong phân khúc phổ thông với thiết kế trẻ trung, màn hình lớn, pin trâu và hỗ trợ kết nối 5G. Camera AI đáp ứng tốt nhu cầu chụp ảnh hàng ngày.",
+    "stock": 60,
+    "discountPercent": 7,
+    "colors": ["Đen Mạnh Mẽ", "Xanh Thời Thượng"],
+    "specifications": {
+      "Màn hình": "6.72 inch LCD, 90Hz",
+      "Chip": "Snapdragon 6 Gen 1 (dự kiến)",
+      "RAM": "8GB",
+      "Camera sau": "Chính 50MP, Phụ 2MP",
+      "Pin": "5000 mAh, Sạc nhanh 33W"
+    }
+  },
+  {
+    "id": "p14",
+    "name": "Xiaomi 14T Pro",
+    "brand": "Xiaomi",
+    "price": 14990000,
+    "oldPrice": 16990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi_14t_pro_1_.png",
+    "description": "Xiaomi 14T Pro mang đến hiệu năng flagship với mức giá cạnh tranh. Màn hình AMOLED 144Hz siêu mượt, chip Dimensity mạnh mẽ, hệ thống camera Leica chất lượng cao và sạc nhanh HyperCharge 120W.",
+    "stock": 30,
+    "discountPercent": 12,
+    "colors": ["Đen", "Xanh Dương", "Bạc"],
+    "specifications": {
+      "Màn hình": "6.67 inch CrystalRes AMOLED, 144Hz",
+      "Chip": "MediaTek Dimensity 9300 (dự kiến)",
+      "RAM": "12GB",
+      "Camera sau": "Leica 50MP (Chính), Leica Tele, Leica Ultra Wide",
+      "Pin": "5000 mAh, Sạc nhanh HyperCharge 120W"
+    }
+  },
+  {
+    "id": "p15",
+    "name": "Xiaomi Redmi Note 14 Pro 5G",
+    "brand": "Xiaomi",
+    "price": 7990000,
+    "oldPrice": 8990000,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/redmi-note-14-pro-plus-xanh.jpg",
+    "description": "Xiaomi Redmi Note 14 Pro 5G tiếp tục là 'vua' trong phân khúc tầm trung với màn hình AMOLED 120Hz, camera 200MP ấn tượng, chip Snapdragon hiệu năng tốt và pin lớn kèm sạc nhanh.",
+    "stock": 70,
+    "discountPercent": 11,
+    "colors": ["Đen Thiên Thạch", "Trắng Ánh Sao", "Xanh Băng Giá"],
+    "specifications": {
+      "Màn hình": "6.67 inch AMOLED, 120Hz",
+      "Chip": "Snapdragon 7+ Gen 3 (dự kiến)",
+      "RAM": "8GB/12GB",
+      "Camera sau": "Chính 200MP OIS, Ultra Wide 8MP, Macro 2MP",
+      "Pin": "5000 mAh, Sạc nhanh 67W hoặc 120W"
+    }
+  },
+  {
+    "id": "p16",
+    "name": "Vivo X100 Pro+",
+    "brand": "Vivo",
+    "price": 25990000,
+    "oldPrice": null,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-vivo-x100-pro.png",
+    "description": "Vivo X100 Pro+ là đỉnh cao nhiếp ảnh di động từ Vivo, hợp tác cùng ZEISS. Cảm biến camera 1 inch thế hệ mới, chip V3+ tùy chỉnh cho xử lý hình ảnh vượt trội, màn hình LTPO AMOLED cong đẳng cấp và hiệu năng siêu mạnh.",
+    "stock": 15,
+    "discountPercent": null,
+    "colors": ["Đen", "Cam (Da)"],
+    "specifications": {
+      "Màn hình": "6.78 inch LTPO AMOLED, 120Hz",
+      "Chip": "Snapdragon 8 Gen 4",
+      "RAM": "16GB",
+      "Camera sau": "ZEISS 50MP (1-inch), ZEISS Tele Periscope 200MP, ZEISS Ultra Wide 50MP",
+      "Pin": "5400 mAh, Sạc nhanh 100W có dây, 50W không dây"
+    }
+  },
+  {
+    "id": "p17",
+    "name": "Realme GT 6 Pro",
+    "brand": "Realme",
+    "price": 16990000,
+    "oldPrice": null,
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/realme-gt-5_2__1_2.png",
+    "description": "Realme GT 6 Pro - 'Flagship Killer' thế hệ mới với hiệu năng bùng nổ từ chip Snapdragon đầu bảng, màn hình AMOLED ProXDR siêu sáng, sạc nhanh SuperDart 150W và thiết kế độc đáo, cá tính.",
+    "stock": 28,
+    "discountPercent": null,
+    "colors": ["Bạc Titan", "Xanh Lá Rừng Sâu"],
+    "specifications": {
+      "Màn hình": "6.78 inch AMOLED ProXDR, 144Hz",
+      "Chip": "Snapdragon 8 Gen 3 (hoặc Gen 4)",
+      "RAM": "12GB/16GB",
+      "Camera sau": "Chính 50MP Sony IMX890 OIS, Tele Periscope, Ultra Wide",
+      "Pin": "5200 mAh, Sạc nhanh SuperDart 150W"
+    }
+  }
+]

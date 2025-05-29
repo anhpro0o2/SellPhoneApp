@@ -13,8 +13,8 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from 'react-native';
-import type { ProfileScreenNavProps } from '../../App';
-import { useAuth } from '../context/AuthContext';
+import type { ProfileScreenNavProps } from '../../App'; // Đảm bảo đường dẫn đúng
+import { useAuth } from '../context/AuthContext'; // Đảm bảo đường dẫn đúng
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -52,7 +52,7 @@ const ProfileScreen: React.FC<ProfileScreenNavProps> = ({ navigation }) => {
       setIsProfileLoading(true);
       try {
         const userDocument = await firestore().collection('users').doc(user.uid).get();
-        if (userDocument.exists()) {
+        if (userDocument.exists()) { // Sửa ở đây nếu lỗi 'exists' còn
           const userData = userDocument.data() as UserProfileData;
           setPhoneNumber(userData.phoneNumber || '');
           setAddress(userData.address || '');
@@ -130,13 +130,17 @@ const ProfileScreen: React.FC<ProfileScreenNavProps> = ({ navigation }) => {
     catch (error) { console.error("[ProfileScreen] Lỗi đăng xuất:", error); Alert.alert('Lỗi', 'Lỗi đăng xuất.'); setIsLoggingOut(false); }
   };
 
-  // --- Cập nhật hàm điều hướng đến ChangePasswordScreen ---
   const goToChangePassword = () => {
     navigation.navigate('ChangePassword');
   };
 
   const goToOrderHistory = () => {
     navigation.navigate('OrderHistory');
+  };
+
+  // --- Hàm điều hướng đến Bảo hành của tôi ---
+  const goToMyWarranties = () => {
+    navigation.navigate('MyWarranties');
   };
 
   if (isProfileLoading && !user) {
@@ -162,7 +166,6 @@ const ProfileScreen: React.FC<ProfileScreenNavProps> = ({ navigation }) => {
           ) : (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
-              {/* ... các TextInput cho thông tin cá nhân ... */}
               <View style={styles.infoRow}>
                 <Text style={styles.label}>Mã khách hàng</Text>
                 <TextInput style={[styles.input, styles.inputDisabled]} value={customerID} editable={false} />
@@ -221,6 +224,11 @@ const ProfileScreen: React.FC<ProfileScreenNavProps> = ({ navigation }) => {
               <Text style={styles.menuItemText}>Lịch sử đơn hàng</Text>
               <Text style={styles.menuItemArrow}>{'>'}</Text>
             </TouchableOpacity>
+            {/* --- Thêm mục Bảo hành của tôi --- */}
+            <TouchableOpacity style={styles.menuItem} onPress={goToMyWarranties}>
+              <Text style={styles.menuItemText}>Bảo hành của tôi</Text>
+              <Text style={styles.menuItemArrow}>{'>'}</Text>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity
@@ -236,7 +244,6 @@ const ProfileScreen: React.FC<ProfileScreenNavProps> = ({ navigation }) => {
   );
 };
 
-// --- Styles (Giữ nguyên) ---
 const styles = StyleSheet.create({
   keyboardAvoidingContainer: { flex: 1, backgroundColor: '#f4f6f8', },
   scrollContainer: { paddingBottom: 20, },

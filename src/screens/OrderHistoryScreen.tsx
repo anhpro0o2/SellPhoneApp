@@ -17,7 +17,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 // Kiểu dữ liệu cho một đơn hàng lấy từ Firestore
 interface Order {
-  id: string; // Document ID từ Firestore
+  id: string; // Document ID từ Firestore, cũng chính là orderId đã lưu
   orderId: string;
   userId: string;
   createdAt: FirebaseFirestoreTypes.Timestamp;
@@ -41,6 +41,7 @@ interface Order {
   totalAmount: number;
   orderStatus: string;
   paymentStatus: string;
+  // Thêm các trường khác nếu cần
 }
 
 const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }) => {
@@ -49,14 +50,19 @@ const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Hàm fetch danh sách đơn hàng
   const fetchOrders = useCallback(async () => {
     if (!user) {
+      // Nếu người dùng chưa đăng nhập, không fetch và có thể hiển thị thông báo
+      // RootNavigator sẽ tự động chuyển về màn hình Login nếu user là null.
+      // Tuy nhiên, để tránh lỗi nếu màn hình này vô tình được render, ta set loading false và orders rỗng.
       setError('Bạn cần đăng nhập để xem lịch sử đơn hàng.');
       setIsLoading(false);
       setOrders([]);
       return;
     }
 
+    console.log('[OrderHistoryScreen] Fetching orders...'); // Log để theo dõi
     setIsLoading(true);
     setError(null);
 
@@ -64,7 +70,7 @@ const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }
       const ordersSnapshot = await firestore()
         .collection('orders')
         .where('userId', '==', user.uid)
-        .orderBy('createdAt', 'desc')
+        .orderBy('createdAt', 'desc') // Sắp xếp mới nhất lên đầu
         .get();
 
       const fetchedOrders: Order[] = ordersSnapshot.docs.map(doc => {
@@ -83,19 +89,26 @@ const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }
         } as Order;
       });
       setOrders(fetchedOrders);
+      console.log('[OrderHistoryScreen] Orders fetched:', fetchedOrders.length);
     } catch (e) {
-      console.error("Lỗi lấy lịch sử đơn hàng:", e);
+      console.error("[OrderHistoryScreen] Lỗi lấy lịch sử đơn hàng:", e);
       setError('Không thể tải lịch sử đơn hàng. Vui lòng thử lại.');
-      // Alert.alert('Lỗi', 'Không thể tải lịch sử đơn hàng.'); // Có thể bỏ Alert ở đây nếu đã có setError
     } finally {
       setIsLoading(false);
     }
-  }, [user]);
+  }, [user]); // fetchOrders phụ thuộc vào user
 
+  // Sử dụng useFocusEffect để fetch lại đơn hàng mỗi khi màn hình được focus
+  // Điều này đảm bảo dữ liệu được cập nhật khi người dùng quay lại từ OrderDetailScreen
   useFocusEffect(
     useCallback(() => {
-      fetchOrders();
-    }, [fetchOrders])
+      fetchOrders(); // Gọi hàm fetchOrders khi màn hình được focus
+
+      return () => {
+        // Hàm dọn dẹp (cleanup) nếu cần, ví dụ: hủy bỏ một subscription
+        // console.log('[OrderHistoryScreen] Screen blurred or unmounted');
+      };
+    }, [fetchOrders]) // Dependency là fetchOrders (đã được bọc trong useCallback)
   );
 
   const formatPrice = (price: number): string => {
@@ -110,11 +123,13 @@ const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }
   };
 
   const getStatusStyle = (status: string) => {
-    switch (status?.toLowerCase()) { // Thêm optional chaining cho status
+    switch (status?.toLowerCase()) {
       case 'đang xử lý':
         return styles.statusProcessing;
       case 'đang giao hàng':
         return styles.statusShipping;
+      case 'đã hoàn tất': // Thêm trạng thái này nếu bạn dùng nó
+        return styles.statusDelivered; // Có thể dùng chung style với "Đã giao"
       case 'đã giao':
         return styles.statusDelivered;
       case 'đã hủy':
@@ -153,10 +168,9 @@ const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }
     );
   }
 
-  // Nếu không có user (đã được xử lý bởi fetchOrders để set error)
-  // RootNavigator sẽ tự động chuyển sang AuthStack (LoginScreen)
-  // Chúng ta chỉ cần hiển thị thông báo lỗi nếu có lỗi khác khi đã đăng nhập
-  if (error && user) { // Chỉ hiển thị lỗi nếu user tồn tại mà vẫn có lỗi fetch
+  // Nếu không có user, RootNavigator sẽ xử lý chuyển về Login.
+  // Chỉ hiển thị lỗi nếu user tồn tại mà vẫn có lỗi fetch.
+  if (error && user) {
     return (
       <View style={styles.centered}>
         <Text style={styles.errorText}>{error}</Text>
@@ -164,9 +178,7 @@ const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }
     );
   }
   
-  // Trường hợp !user, setError đã được gọi trong fetchOrders.
-  // RootNavigator sẽ xử lý việc hiển thị màn hình Login.
-  // Nếu vẫn muốn hiển thị thông báo ở đây khi !user:
+  // Nếu !user và có lỗi (ví dụ, "Bạn cần đăng nhập...")
   if (!user && error) {
     return (
       <View style={styles.centered}>
@@ -176,18 +188,13 @@ const OrderHistoryScreen: React.FC<OrderHistoryScreenNavProps> = ({ navigation }
     );
   }
 
-
-  if (!orders.length && user) { // Chỉ hiển thị "chưa có đơn hàng" nếu đã đăng nhập và không có đơn hàng
+  if (!orders.length && user) {
     return (
       <View style={styles.centered}>
         <Text style={styles.emptyText}>Bạn chưa có đơn hàng nào.</Text>
       </View>
     );
   }
-  
-  // Nếu !user và không có lỗi (ví dụ, màn hình bị render thoáng qua trước khi RootNavigator chuyển stack)
-  // thì không nên hiển thị gì hoặc một loading indicator chung.
-  // Tuy nhiên, với useFocusEffect và logic trong fetchOrders, trường hợp này ít xảy ra.
 
   return (
     <View style={styles.container}>
@@ -236,17 +243,6 @@ const styles = StyleSheet.create({
     color: '#6c757d',
     textAlign: 'center',
   },
-  // loginButton: { // Không cần nữa
-  //   backgroundColor: '#e83e8c',
-  //   paddingVertical: 10,
-  //   paddingHorizontal: 20,
-  //   borderRadius: 5,
-  // },
-  // loginButtonText: { // Không cần nữa
-  //   color: '#fff',
-  //   fontSize: 16,
-  //   fontWeight: 'bold',
-  // },
   orderItem: {
     backgroundColor: '#ffffff',
     padding: 15,
@@ -301,19 +297,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   statusProcessing: {
-    backgroundColor: '#ffc107',
+    backgroundColor: '#ffc107', // Vàng
   },
   statusShipping: {
-    backgroundColor: '#17a2b8',
+    backgroundColor: '#17a2b8', // Xanh dương
   },
-  statusDelivered: {
-    backgroundColor: '#28a745',
+  statusDelivered: { // Bao gồm cả "Đã hoàn tất"
+    backgroundColor: '#28a745', // Xanh lá
   },
   statusCancelled: {
-    backgroundColor: '#dc3545',
+    backgroundColor: '#dc3545', // Đỏ
   },
   statusDefault: {
-    backgroundColor: '#6c757d',
+    backgroundColor: '#6c757d', // Xám
   },
   paymentStatusText: {
     fontSize: 13,

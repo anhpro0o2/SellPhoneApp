@@ -24,7 +24,6 @@ const LoginScreen: React.FC<LoginScreenNavProps> = ({ navigation }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // --- State cho việc lưu email ---
   const [rememberEmail, setRememberEmail] = useState<boolean>(true); // Mặc định là bật
 
   // --- useEffect để tải email đã lưu khi màn hình mount ---
@@ -33,19 +32,18 @@ const LoginScreen: React.FC<LoginScreenNavProps> = ({ navigation }) => {
       try {
         const savedEmail = await AsyncStorage.getItem(SAVED_EMAIL_KEY);
         if (savedEmail !== null) {
-          setEmail(savedEmail); // Điền email đã lưu vào state
+          setEmail(savedEmail);
           console.log('Loaded saved email:', savedEmail);
         } else {
           console.log('No saved email found.');
         }
-        // Có thể thêm logic để đọc trạng thái rememberEmail nếu muốn
       } catch (e) {
         console.error('Failed to load saved email from AsyncStorage', e);
       }
     };
 
     loadSavedEmail();
-  }, []); // Mảng rỗng đảm bảo chỉ chạy 1 lần
+  }, []);
 
   // --- Hàm xử lý đăng nhập (thêm logic lưu email) ---
   const handleLogin = async () => {
@@ -56,44 +54,48 @@ const LoginScreen: React.FC<LoginScreenNavProps> = ({ navigation }) => {
 
     setIsLoading(true);
 
-    // --- Lưu hoặc xóa email trước khi đăng nhập ---
-    const emailToSave = email.trim(); // Lấy email đã trim
+    const emailToSave = email.trim();
     try {
       if (rememberEmail && emailToSave) {
         await AsyncStorage.setItem(SAVED_EMAIL_KEY, emailToSave);
         console.log('Saved email:', emailToSave);
       } else {
-        // Nếu không chọn lưu hoặc email rỗng, xóa email đã lưu (nếu có)
         await AsyncStorage.removeItem(SAVED_EMAIL_KEY);
         console.log('Removed saved email.');
       }
     } catch (e) {
       console.error('Failed to save/remove email in AsyncStorage', e);
-      // Có thể không cần báo lỗi cho người dùng ở đây
     }
-    // --- Kết thúc phần lưu/xóa email ---
 
     try {
-      // Đăng nhập bằng Firebase
       const userCredential = await auth().signInWithEmailAndPassword(emailToSave, password);
       console.log('Đăng nhập Firebase thành công!', userCredential.user.email);
-      // RootNavigator sẽ tự chuyển màn hình
+      // RootNavigator sẽ tự chuyển màn hình, không cần setIsLoading(false) ở đây
     } catch (error: any) {
-      console.error("Lỗi đăng nhập Firebase:", error);
-      let errorMessage = 'Sai địa chỉ email hoặc mật khẩu.';
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-         errorMessage = 'Sai địa chỉ email hoặc mật khẩu.';
-      } else if (error.code === 'auth/invalid-email') {
+      console.error("Lỗi đăng nhập Firebase:", error.code, error.message); // Log cả code và message
+      let errorMessage = 'Có lỗi xảy ra, vui lòng thử lại.'; // Mặc định
+
+      // --- SỬA LỖI Ở ĐÂY: Cập nhật thông báo lỗi ---
+      if (
+          error.code === 'auth/user-not-found' ||
+          error.code === 'auth/wrong-password' ||
+          error.code === 'auth/invalid-credential' // Thêm mã lỗi này
+      ) {
+          errorMessage = 'Bạn đã nhập sai mật khẩu hoặc email.'; // Thông báo mong muốn
+      }
+      // --- KẾT THÚC SỬA LỖI ---
+      else if (error.code === 'auth/invalid-email') {
         errorMessage = 'Địa chỉ email không hợp lệ.';
       } else if (error.code === 'auth/user-disabled') {
         errorMessage = 'Tài khoản này đã bị vô hiệu hóa.';
-      } else {
-         errorMessage = 'Có lỗi xảy ra, vui lòng thử lại.';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Quá nhiều yêu cầu đăng nhập. Vui lòng thử lại sau.';
       }
+      // Bạn có thể thêm các mã lỗi khác của Firebase Auth nếu cần
+
       Alert.alert('Đăng nhập thất bại', errorMessage);
-      setIsLoading(false); // Chỉ tắt loading khi có lỗi vì đăng nhập thành công sẽ unmount
+      setIsLoading(false); // Chỉ tắt loading khi có lỗi
     }
-    // Không cần setIsLoading(false) ở cuối nếu đăng nhập thành công
   };
 
   const goToRegister = () => { if (!isLoading) navigation.navigate('Register'); };
@@ -107,7 +109,7 @@ const LoginScreen: React.FC<LoginScreenNavProps> = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          value={email} // Giá trị lấy từ state (có thể đã được load từ AsyncStorage)
+          value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
           keyboardType="email-address"
@@ -125,20 +127,17 @@ const LoginScreen: React.FC<LoginScreenNavProps> = ({ navigation }) => {
           editable={!isLoading}
         />
 
-        {/* --- Thêm Switch để bật/tắt lưu email --- */}
         <View style={styles.rememberMeContainer}>
            <Text style={styles.rememberMeText}>Lưu địa chỉ email?</Text>
            <Switch
-             trackColor={{ false: "#767577", true: "#AC0013" }} // Màu nền của switch
-             thumbColor={rememberEmail ? "#AC0013" : "#f4f3f4"} // Màu của nút tròn
+             trackColor={{ false: "#767577", true: "#AC0013" }}
+             thumbColor={rememberEmail ? "#AC0013" : "#f4f3f4"}
              ios_backgroundColor="#3e3e3e"
-             onValueChange={setRememberEmail} // Cập nhật state khi switch thay đổi
-             value={rememberEmail} // Giá trị hiện tại của switch
-             disabled={isLoading} // Vô hiệu hóa khi đang loading
+             onValueChange={setRememberEmail}
+             value={rememberEmail}
+             disabled={isLoading}
            />
         </View>
-        {/* --- Kết thúc Switch --- */}
-
 
         <TouchableOpacity style={[styles.button, isLoading && styles.buttonDisabled]} onPress={handleLogin} disabled={isLoading}>
            {isLoading ? <ActivityIndicator size="small" color="#ffffff" /> : <Text style={styles.buttonText}>Đăng Nhập</Text>}
@@ -156,32 +155,29 @@ const LoginScreen: React.FC<LoginScreenNavProps> = ({ navigation }) => {
   );
 };
 
-// --- Cập nhật Styles ---
 const styles = StyleSheet.create({
   keyboardAvoidingContainer: { flex: 1, },
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 30, backgroundColor: '#f8f9fa', },
   logo: { width: 220, height: 90, marginBottom: 40, },
   title: { fontSize: 32, fontWeight: 'bold', color: '#343a40', marginBottom: 35, },
   input: { width: '100%', height: 55, backgroundColor: '#ffffff', borderWidth: 1, borderColor: '#ced4da', borderRadius: 8, paddingHorizontal: 15, marginBottom: 20, fontSize: 16, color: '#495057', },
-  // --- Style cho phần Lưu email ---
   rememberMeContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between', // Đẩy text và switch ra 2 bên
-    alignItems: 'center', // Căn giữa theo chiều dọc
-    width: '100%', // Chiếm toàn bộ chiều rộng
-    marginBottom: 20, // Khoảng cách dưới
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 20,
   },
   rememberMeText: {
     fontSize: 14,
     color: '#495057',
   },
-  // --- Kết thúc Style Lưu email ---
-  button: { width: '100%', backgroundColor: '#AC0013', paddingVertical: 16, borderRadius: 8, alignItems: 'center', marginTop: 5, elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.2, shadowRadius: 1.41, }, // Giảm marginTop
+  button: { width: '100%', backgroundColor: '#AC0013', paddingVertical: 16, borderRadius: 8, alignItems: 'center', marginTop: 5, elevation: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.2, shadowRadius: 1.41, },
   buttonText: { color: '#ffffff', fontSize: 18, fontWeight: 'bold', },
-  buttonDisabled: { backgroundColor: '#AC0013', },
+  buttonDisabled: { backgroundColor: '#AC0013', opacity: 0.7 }, // Thêm opacity khi disable
   linksContainer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginTop: 25, },
   linkText: { color: '#AC0013', fontSize: 15, },
-  linkTextDisabled: { color: '#AC0013', },
+  linkTextDisabled: { color: '#AC0013', opacity: 0.5 }, // Thêm opacity khi disable
 });
 
 export default LoginScreen;

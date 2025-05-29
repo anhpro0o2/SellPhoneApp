@@ -1,3 +1,24 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  // Kế thừa cấu hình cơ sở của React Native TypeScript
+  "extends": "@react-native/typescript-config/tsconfig.json",
+
+  // Thêm các tùy chọn biên dịch của riêng bạn ở đây
+  "compilerOptions": {
+    /* Bỏ qua kiểm tra kiểu của tất cả các file khai báo (.d.ts) từ thư viện.
+       Điều này rất quan trọng để tránh lỗi sai trong node_modules. */
+    "skipLibCheck": true,
+
+    /* Bạn có thể thêm các tùy chọn khác ở đây nếu cần, ví dụ: */
+    // "baseUrl": ".", // Nếu bạn muốn dùng đường dẫn tuyệt đối
+    // "paths": { ... } // Nếu bạn muốn định nghĩa alias đường dẫn
+  },
+
+  // Thêm các thư mục/file bạn muốn loại trừ khỏi quá trình biên dịch
+  // (Mặc dù cấu hình cơ sở có thể đã exclude node_modules, thêm vào đây để chắc chắn)
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }

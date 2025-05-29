@@ -19,7 +19,8 @@ import PromotionsScreen from './src/screens/PromotionsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 import OrderDetailScreen from './src/screens/OrderDetailScreen';
-import ChangePasswordScreen from './src/screens/ChangePasswordScreen'; // <-- Import ChangePasswordScreen
+import ChangePasswordScreen from './src/screens/ChangePasswordScreen';
+import MyWarrantiesScreen from './src/screens/MyWarrantiesScreen'; // <-- Import MyWarrantiesScreen
 
 // --- Định nghĩa kiểu cho các Stack ---
 export type AuthStackParamList = {
@@ -43,7 +44,8 @@ export type MainStackParamList = {
   Profile: undefined;
   OrderHistory: undefined;
   OrderDetail: { orderId: string };
-  ChangePassword: undefined; // <-- Khai báo ChangePasswordScreen
+  ChangePassword: undefined;
+  MyWarranties: undefined; // <-- Khai báo MyWarrantiesScreen
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -71,12 +73,21 @@ const RootNavigator = () => {
             <MainStack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Tài khoản của tôi', headerShown: true, headerTintColor: '#e83e8c' }} />
             <MainStack.Screen name="OrderHistory" component={OrderHistoryScreen} options={{ title: 'Lịch sử đơn hàng', headerShown: true, headerTintColor: '#e83e8c' }} />
             <MainStack.Screen name="OrderDetail" component={OrderDetailScreen} options={{ title: 'Chi tiết đơn hàng', headerShown: true, headerTintColor: '#e83e8c' }} />
-            {/* --- Khai báo ChangePasswordScreen trong Navigator --- */}
             <MainStack.Screen
                 name="ChangePassword"
                 component={ChangePasswordScreen}
                 options={{
                     title: 'Đổi mật khẩu',
+                    headerShown: true,
+                    headerTintColor: '#e83e8c',
+                }}
+            />
+            {/* --- Khai báo MyWarrantiesScreen trong Navigator --- */}
+            <MainStack.Screen
+                name="MyWarranties"
+                component={MyWarrantiesScreen}
+                options={{
+                    title: 'Bảo hành của tôi',
                     headerShown: true,
                     headerTintColor: '#e83e8c',
                 }}
@@ -112,4 +123,5 @@ export type PromotionsScreenNavProps = NativeStackScreenProps<MainStackParamList
 export type ProfileScreenNavProps = NativeStackScreenProps<MainStackParamList, 'Profile'>;
 export type OrderHistoryScreenNavProps = NativeStackScreenProps<MainStackParamList, 'OrderHistory'>;
 export type OrderDetailScreenNavProps = NativeStackScreenProps<MainStackParamList, 'OrderDetail'>;
-export type ChangePasswordScreenNavProps = NativeStackScreenProps<MainStackParamList, 'ChangePassword'>; // <-- Export kiểu
+export type ChangePasswordScreenNavProps = NativeStackScreenProps<MainStackParamList, 'ChangePassword'>;
+export type MyWarrantiesScreenNavProps = NativeStackScreenProps<MainStackParamList, 'MyWarranties'>; // <-- Export kiểu
